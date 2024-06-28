@@ -5,8 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -21,9 +24,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DrawRoom() //dibuja el fondo
-            DrawSquareWithRectLine() // dibuja un cuadrado con drawRect
             DrawSquareWithDrawLine() // dibuja un cuadrado con drawLine
-            DrawSquareWithPath() //dibuja un cuadrado con Path
+            //DrawSquareWithPath() //dibuja un cuadrado con Path
+            //FilledButton()
         }
     }
 }
@@ -43,34 +46,19 @@ fun DrawRoom() {
     }
 }
 
-// Función composable para dibujar un cuadrado rojo utilizando drawRect
-@Composable
-fun DrawSquareWithRectLine() {
-    Canvas(
-        modifier = Modifier.fillMaxSize() // Ocupa todo el tamaño disponible
-    ) {
-        drawRect(
-            color = Color.Red, // Color rojo
-            topLeft = Offset(60f, 60f), // Posición superior izquierda del cuadrado
-            size = Size(100f, 100f), // Tamaño del cuadrado
-            style = Stroke(width = 5.dp.toPx()) // Grosor del borde de 5.dp
-        )
-    }
-}
-
 // Función composable para dibujar un cuadrado rojo utilizando Path
 @Composable
 fun DrawSquareWithPath() {
     Canvas(modifier = Modifier.fillMaxSize()) {
         val path = androidx.compose.ui.graphics.Path().apply {
-            val squareSize = 40.dp.toPx()
+            val triangleSize = 40.dp.toPx()
             val topLeft = Offset(60f, 440f) // Posición superior izquierda del cuadrado
 
             // Define el camino del cuadrado
             moveTo(topLeft.x, topLeft.y)
-            lineTo(topLeft.x + squareSize, topLeft.y)
-            lineTo(topLeft.x + squareSize, topLeft.y + squareSize)
-            lineTo(topLeft.x, topLeft.y + squareSize)
+            lineTo(topLeft.x + triangleSize, topLeft.y)
+            //lineTo(topLeft.x + triangleSize, topLeft.y + triangleSize)
+            lineTo(topLeft.x, topLeft.y + triangleSize)
             close() // Cierra el camino conectando el último punto con el primero
         }
         drawPath(path, Color.Red, style = Stroke(width = 5.dp.toPx())) // Dibuja el camino con color rojo y grosor de 5.dp
@@ -81,34 +69,37 @@ fun DrawSquareWithPath() {
 @Composable
 fun DrawSquareWithDrawLine() {
     Canvas(modifier = Modifier.fillMaxSize()) {
-        val squareSize = 40.dp.toPx()
+        val triangleSize = 100.dp.toPx()
         val strokeWidth = 5.dp.toPx()
-        val topLeft = Offset(60f, 830f) // Posición superior izquierda del cuadrado
-
+        val top = Offset(500f, 400f) // Posición superior izquierda del triangulo
+        val a = Offset(300f, 1000f)
+        val b = Offset(800f, 1000f)
         // Dibuja las líneas para formar un cuadrado rojo
         drawLine(
-            color = Color.Red,
-            start = topLeft,
-            end = Offset(topLeft.x + squareSize, topLeft.y),
+            color = Color.Magenta,
+            start = top,
+            end = a,
             strokeWidth = strokeWidth
         )
         drawLine(
             color = Color.Red,
-            start = Offset(topLeft.x + squareSize, topLeft.y),
-            end = Offset(topLeft.x + squareSize, topLeft.y + squareSize),
+            start = a,
+            end = b,
             strokeWidth = strokeWidth
         )
         drawLine(
-            color = Color.Red,
-            start = Offset(topLeft.x + squareSize, topLeft.y + squareSize),
-            end = Offset(topLeft.x, topLeft.y + squareSize),
-            strokeWidth = strokeWidth
-        )
-        drawLine(
-            color = Color.Red,
-            start = Offset(topLeft.x, topLeft.y + squareSize),
-            end = topLeft,
+            color = Color.Blue,
+            start = b,
+            end = top,
             strokeWidth = strokeWidth
         )
     }
 }
+
+@Composable
+fun FilledButton(onClick: () -> Unit) {
+    Button(onClick = { onClick() }) {
+        Text("Fijar")
+    }
+}
+
